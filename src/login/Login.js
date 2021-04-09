@@ -8,7 +8,7 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            remember: true
+            remember: false
         };
 
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
@@ -30,8 +30,23 @@ class Login extends React.Component {
     }
 
     handleSubmit(event){
-        console.info(this.state.username);
-        console.info(this.state.remember);
+        event.preventDefault();
+        const formData = {
+            username: this.state.username,
+            password: this.state.password,
+            remember: this.state.remember
+        };
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        fetch(process.env.REACT_APP_AUTH_ENDPOINT,
+            {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: headers
+            }
+        ).then(resp => resp.json())
+        .then(data => console.info(data));
     }
 
     render(){
