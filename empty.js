@@ -1,0 +1,1 @@
+//This is to render all svg files in Jest as nothing
