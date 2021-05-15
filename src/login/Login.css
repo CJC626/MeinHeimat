@@ -4,3 +4,15 @@
     padding: 15px;
     margin: auto;
   }
+
+.form-error-display{
+  display: block;
+}
+
+.form-error-hidden{
+  display: none;
+}
+
+.form-invalidpassword{
+  color: red;
+}

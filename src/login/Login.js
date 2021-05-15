@@ -7,12 +7,16 @@ class Login extends React.Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            errorText: '',
+            formErrorCls: 'form-error-hidden'
         };
         this.setToken = props.setToken.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.getErrorCls = this.getErrorCls.bind(this);
+        this.getErrorText = this.getErrorText.bind(this);
     }
 
     handleUsernameChange(event){
@@ -21,6 +25,21 @@ class Login extends React.Component {
 
     handlePasswordChange(event){
         this.setState({password: event.target.value});
+    }
+
+    handleErrorFromServer(errorText){
+        this.setState({
+            formErrorCls: 'form-error-display',
+            errorText: errorText
+        });
+    }
+
+    getErrorCls(){
+        return this.state.formErrorCls;
+    }
+
+    getErrorText(){
+        return this.state.errorText;
     }
 
     handleSubmit(event){
@@ -42,7 +61,11 @@ class Login extends React.Component {
         ).then(resp => resp.json())
         .then(data => {
             console.info(data);
-            this.setToken(data);
+            if(data.error){
+                this.handleErrorFromServer(data.error);
+            }else{
+                this.setToken(data);
+            }
         });
     }
 
@@ -51,8 +74,11 @@ class Login extends React.Component {
             <main className="form-signin">
                 <LoginForm 
                     submitForm={this.handleSubmit} 
-                    handlePasswordChange={this.handleUsernameChange}
-                    handleUsernameChange={this.handleUsernameChange}/>
+                    handlePasswordChange={this.handlePasswordChange}
+                    handleUsernameChange={this.handleUsernameChange}
+                    errorText={this.getErrorText}
+                    formErrorCls={this.getErrorCls}
+                    />
             </main>
         );
     }

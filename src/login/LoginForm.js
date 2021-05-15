@@ -6,13 +6,18 @@ class LoginForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            remember: false
+            remember: false,
+            formErrorCls: props.formErrorCls,
+            errorText: props.errorText
         };
         this.submitForm = props.submitForm;
         this.handlePasswordChange = props.handlePasswordChange;
         this.handleUsernameChange = props.handleUsernameChange;
+        this.handleErrorFromServer = props.handleErrorFromServer;
         this.handleRememberChange = this.handleRememberChange.bind(this);
+
     }
+
 
     handleRememberChange(event){
         this.setState({remember: event.target.checked});
@@ -26,6 +31,9 @@ class LoginForm extends React.Component {
                 onSubmit={this.submitForm}>
             <img src={logo} alt="" className="mb-4"></img>
             <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+            <div data-testid="errorDisplay" className={this.state.formErrorCls()}>
+                <span className="form-invalidpassword">{this.state.errorText()}</span>
+            </div>
             <div className="form-floating">
                 <input 
                     type="email" 
